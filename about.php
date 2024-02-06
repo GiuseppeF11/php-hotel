@@ -82,36 +82,37 @@ for  ($i = 0; $i < count($hotels); $i++) {
 <body>
 	<div class="container">
 		<h1>Boolean Hotels</h1>
-		<form action="./about.php" method="GET">
+		<form action="./index.php" method="GET">
 				<button class="my-3">
-					Filter Parking
+					Remove Filter
 				</button>
 		</form>
+
 		<ul class="row row-cols-3">
 			<?php
-			foreach ($hotels as $hotel) {
+			foreach ($filterHotels as $filterHotel) {
 			?>
 
 				<li class="col d-flex justify-content-center">
 					<div class="card">
 						<h2>
-							<?php echo $hotel['name'] ?>
+							<?php echo $filterHotel['name'] ?>
 						</h2>
 						<div class="img-box">
-							<img src="<?php echo $hotel['imgUrl'] ?>" alt="">
+							<img src="<?php echo $filterHotel['imgUrl'] ?>" alt="">
 						</div>
 						<div>
-							<?php echo $hotel['description'] ?>
+							<?php echo $filterHotel['description'] ?>
 						</div>
 						<div>
-							Voto: <strong><?php echo $hotel['vote'] ?></strong>
+							Voto: <strong><?php echo $filterHotel['vote'] ?></strong>
 						</div>
 						<div>
-							Distanza dal centro: <strong><?php echo $hotel['distance_to_center'] ?> km</strong>
+							Distanza dal centro: <strong><?php echo $filterHotel['distance_to_center'] ?> km</strong>
 						</div>
 						<div>
 							<?php
-								if ($hotel['parking'] === true){
+								if ($filterHotel['parking'] === true){
 									echo "Parking";
 								}
 								else {
