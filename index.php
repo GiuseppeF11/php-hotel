@@ -45,16 +45,36 @@ $hotels = [
 
 ];
 
-$filterHotels = [];
-$filterParking ='';
-$filterVote ='';
+$filteredHotels = [];
 
-for  ($i = 0; $i < count($hotels); $i++) {
-	if ($hotels[$i]['parking'] === true){
-		$filterHotels[] = $hotels[$i];
+foreach ($hotels as $index => $hotel) {
+
+	$addToArray = true;
+
+	if(
+		isset( $_GET['parking']) == true && ($_GET['parking']) != '' ) {
+
+			if ( $_GET['parking'] =='y' && $hotel['parking'] == false ) {
+
+				$addToArray = false;
+			}
+			elseif ( $_GET['parking'] =='n' && $hotel['parking'] == true ) {
+
+				$addToArray = false;
+			}
+	}
+
+	if(
+		isset( $_GET['vote']) == true && ($_GET['vote']) != '' && is_numeric($_GET['vote'])) {
+			if ($hotel['vote'] < $_GET['vote']) {
+				$addToArray = false;
+			}
+		}
+
+	if ( $addToArray == true) {
+		$filteredHotels[] = $hotel;
 	}
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -72,67 +92,69 @@ for  ($i = 0; $i < count($hotels); $i++) {
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<!-- CSS -->
 	<link rel="stylesheet" href="./style.css">
-	<!-- VUE JS -->
-	<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-	<!-- AXIOS -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.5/axios.min.js" integrity="sha512-TjBzDQIDnc6pWyeM1bhMnDxtWH0QpOXMcVooglXrali/Tj7W569/wd4E8EDjk1CwOAOPSJon1VfcEt1BI4xIrA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
 </head>
 
 <body>
 	<div class="container">
-		<h1>Boolean Hotels</h1>
-		<form action="./about.php" method="GET">
-				<button class="my-3">
-					Filter Parking
-				</button>
-		</form>
-		<ul class="row row-cols-3">
-			<?php
-			foreach ($hotels as $hotel) {
-			?>
-
-				<li class="col d-flex justify-content-center">
-					<div class="card">
-						<h2>
-							<?php echo $hotel['name'] ?>
-						</h2>
-						<div class="img-box">
-							<img src="<?php echo $hotel['imgUrl'] ?>" alt="">
+		<div>
+			<form action="" method="GET">
+				<div class="mb-3">
+					<div class="row">
+						<div class="col">
+							<label for="parking" class="form-label">
+								Parcheggio
+							</label>
+							<select class="form-select" name="parking" id="parking">
+								<option value="">Indifferente</option>
+								<option value="y">Si</option>
+								<option value="n">No</option>
+							</select>
 						</div>
-						<div>
-							<?php echo $hotel['description'] ?>
-						</div>
-						<div>
-							Voto: <strong><?php echo $hotel['vote'] ?></strong>
-						</div>
-						<div>
-							Distanza dal centro: <strong><?php echo $hotel['distance_to_center'] ?> km</strong>
-						</div>
-						<div>
-							<?php
-								if ($hotel['parking'] === true){
-									echo "Parking";
-								}
-								else {
-									echo "No Parking";
-								}
-							?>
+						<div class="col">
+							<label for="vote" class="form-label">
+								Voto
+							</label>
+							<input class="form-control" type="number" name="vote" id="vote" placeholder="Insersci un voto">
 						</div>
 					</div>
-				</li>
+					
+				</div>
+				<div>
+					<button type="submit" class="btn btn-primary ">
+						Filtra
+					</button>
+				</div>
+			</form>
+		</div>
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col">Nome</th>
+					<th scope="col">Descrizione</th>
+					<th scope="col">Parcheggio</th>
+					<th scope="col">Voto</th>
+					<th scope="col">Distanza dal centro</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php
+				foreach ($filteredHotels as $hotel) {
+				?>
+					<tr>
+						<th scope="row"><?php echo $hotel['name']; ?></th>
+						<td><?php echo $hotel['description']; ?></td>
+						<td><?php echo ($hotel['parking'] == true ? 'Si' : 'No'); ?></td>
+						<td><?php echo $hotel['vote']; ?></td>
+						<td><?php echo $hotel['distance_to_center']; ?></td>
+					</tr>
 
-			<?php
-			}
-			?>
-		</ul>
+				<?php
+				}
+				?>
+			</tbody>
+		</table>
 	</div>
-
-	<!-- BOOTSTRAP JS -->
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-
-	<!-- MY JS -->
-	<script type="text/javascript" src="./js/scripts.js"></script>
+	</div>
 </body>
 
 </html>

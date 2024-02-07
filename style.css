@@ -9,30 +9,8 @@ body {
     background-color: rgb(14, 139, 202);
 }
 
-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-/* GENERAL */
-
-.img-box {
-    width: 200px;
-    height: 200px;
-}
-
-.card {
-    width: 300px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 30px;
-    padding: 10px;
+.container {
+    height: 100vh;
+    background-color: aquamarine;
+    align-content: center;
 }
